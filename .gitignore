@@ -7,3 +7,6 @@ out/
 *.exp
 *.dll
 .vs/
+
+/sycl-cuda/
+/sycl-cuda-clean/
