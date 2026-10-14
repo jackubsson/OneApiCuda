@@ -103,7 +103,7 @@ int main(int argc, char* argv[]) {
                             const std::size_t block = item.get_group(0);
 
                             local_hist[lid] = 0;
-                            item.barrier(sycl::access::fence_space::local_space);
+                            sycl::group_barrier(item.get_group());
 
                             if (idx < n) {
                                 const std::uint32_t key =
@@ -120,7 +120,7 @@ int main(int argc, char* argv[]) {
                                 counter.fetch_add(1);
                             }
 
-                            item.barrier(sycl::access::fence_space::local_space);
+                            sycl::group_barrier(item.get_group());
                             block_hist[block * kRadix + lid] = local_hist[lid];
                         });
                 });
