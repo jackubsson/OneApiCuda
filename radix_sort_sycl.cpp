@@ -89,22 +89,6 @@ int main(int argc, char* argv[]) {
                 const unsigned shift = static_cast<unsigned>(pass * 8);
 
                 // Build one 256-bin histogram per block.
-                q.parallel_for(
-                    sycl::nd_range<1>(
-                        sycl::range<1>(padded),
-                        sycl::range<1>(kBlockSize)),
-                    [=](sycl::nd_item<1> item) {
-                        const std::size_t local_id =
-                            item.get_local_id(0);
-                        const std::size_t global_id =
-                            item.get_global_id(0);
-                        const std::size_t block_id =
-                            item.get_group(0);
-
-                        sycl::local_accessor<std::uint32_t, 1> *unused = nullptr;
-                        (void)unused;
-                    });
-
                 // Use a separate kernel with a local histogram accessor.
                 q.submit([&](sycl::handler& h) {
                     sycl::local_accessor<std::uint32_t, 1> local_hist(
